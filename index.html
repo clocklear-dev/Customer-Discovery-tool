@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Red Hat Customer Discovery Tool</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6; /* Light gray background */
+        }
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+        .accordion-content.active {
+            max-height: 500px; /* Adjust as needed for content */
+            transition: max-height 0.5s ease-in;
+        }
+        .loading-spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-left-color: #ef4444; /* Red Hat red */
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+    <div class="container mx-auto p-4 md:p-8 max-w-4xl">
+        <!-- Header Section -->
+        <header class="bg-red-700 text-white p-6 rounded-lg shadow-lg mb-8 text-center">
+            <h1 class="text-3xl md:text-4xl font-bold mb-2">Red Hat Customer Discovery Tool</h1>
+            <p class="text-lg md:text-xl">Empowering MDRs for impactful conversations</p>
+        </header>
+
+        <!-- Introduction Section -->
+        <section class="bg-white p-6 rounded-lg shadow-md mb-8">
+            <h2 class="text-2xl font-semibold text-red-700 mb-4">Welcome, Market Development Representative!</h2>
+            <p class="mb-4">This tool is designed to help you prepare for and conduct effective discovery calls with new Red Hat customers. Understanding their environment and challenges is key to providing value.</p>
+            <p>Use the sections below to guide your conversations and the "Discovery Pad" to capture your notes. You can then use the AI to generate initial insights!</p>
+        </section>
+
+        <!-- Key Questions Section -->
+        <section class="bg-white p-6 rounded-lg shadow-md mb-8">
+            <h2 class="text-2xl font-semibold text-red-700 mb-4">Key Questions to Ask</h2>
+            <p class="mb-4 text-gray-600">These questions are designed to help you uncover the customer's priorities, challenges, and current technology landscape.</p>
+
+            <!-- Accordion for Questions -->
+            <div id="questions-accordion">
+                <!-- General Discovery -->
+                <div class="mb-4 border border-gray-200 rounded-lg">
+                    <button class="accordion-header flex justify-between items-center w-full p-4 bg-gray-50 hover:bg-gray-100 focus:outline-none rounded-t-lg">
+                        <span class="font-medium text-lg">General Business & IT Priorities</span>
+                        <svg class="w-5 h-5 transform transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <div class="accordion-content p-4 bg-white rounded-b-lg">
+                        <ul class="list-disc pl-5 space-y-2 text-gray-700">
+                            <li>What are your top 3 IT priorities for the next 12-18 months?</li>
+                            <li>What are the biggest challenges your organization is currently facing related to technology or operations?</li>
+                            <li>What initiatives are you currently focused on that involve IT?</li>
+                            <li>How does IT contribute to your overall business goals?</li>
+                            <li>What does success look like for these initiatives?</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Application & Development -->
+                <div class="mb-4 border border-gray-200 rounded-lg">
+                    <button class="accordion-header flex justify-between items-center w-full p-4 bg-gray-50 hover:bg-gray-100 focus:outline-none">
+                        <span class="font-medium text-lg">Applications & Development Practices</span>
+                        <svg class="w-5 h-5 transform transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <div class="accordion-content p-4 bg-white rounded-b-lg">
+                        <ul class="list-disc pl-5 space-y-2 text-gray-700">
+                            <li>What kind of applications are you building or running (e.g., custom, COTS, legacy)?</li>
+                            <li>Are you looking to modernize existing applications or build new cloud-native ones?</li>
+                            <li>What development methodologies do your teams use (e.g., Agile, DevOps, Waterfall)?</li>
+                            <li>Are you currently using or considering containers (Docker, Podman) or container orchestration (Kubernetes)?</li>
+                            <li>How do you manage your application lifecycle from development to production?</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Infrastructure & Cloud -->
+                <div class="mb-4 border border-gray-200 rounded-lg">
+                    <button class="accordion-header flex justify-between items-center w-full p-4 bg-gray-50 hover:bg-gray-100 focus:outline-none">
+                        <span class="font-medium text-lg">Infrastructure & Cloud Strategy</span>
+                        <svg class="w-5 h-5 transform transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <div class="accordion-content p-4 bg-white rounded-b-lg">
+                        <ul class="list-disc pl-5 space-y-2 text-gray-700">
+                            <li>What's your current infrastructure setup (on-premise, hybrid cloud, multi-cloud)?</li>
+                            <li>Which cloud providers are you currently using or evaluating (AWS, Azure, GCP, others)?</li>
+                            <li>How are you handling server provisioning, configuration, and patching?</li>
+                            <li>What are your strategies for automation and orchestration across your IT environment?</li>
+                            <li>Are you looking to consolidate or optimize your existing infrastructure?</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Data & AI/ML -->
+                <div class="mb-4 border border-gray-200 rounded-lg">
+                    <button class="accordion-header flex justify-between items-center w-full p-4 bg-gray-50 hover:bg-gray-100 focus:outline-none">
+                        <span class="font-medium text-lg">Data & Emerging Technologies (AI/ML)</span>
+                        <svg class="w-5 h-5 transform transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <div class="accordion-content p-4 bg-white rounded-b-lg">
+                        <ul class="list-disc pl-5 space-y-2 text-gray-700">
+                            <li>How are you currently managing and analyzing your data?</li>
+                            <li>Are you exploring or implementing any AI/ML initiatives? If so, for what purposes?</li>
+                            <li>What challenges do you face with data integration or accessibility?</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Security & Compliance -->
+                <div class="mb-4 border border-gray-200 rounded-lg">
+                    <button class="accordion-header flex justify-between items-center w-full p-4 bg-gray-50 hover:bg-gray-100 focus:outline-none">
+                        <span class="font-medium text-lg">Security & Compliance</span>
+                        <svg class="w-5 h-5 transform transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <div class="accordion-content p-4 bg-white rounded-b-lg">
+                        <ul class="list-disc pl-5 space-y-2 text-gray-700">
+                            <li>What are your key security concerns or challenges?</li>
+                            <li>Are there specific industry regulations or compliance requirements you need to meet (e.g., GDPR, HIPAA, PCI DSS)?</li>
+                            <li>How do you manage identity and access across your systems?</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Understanding Environment Section -->
+        <section class="bg-white p-6 rounded-lg shadow-md mb-8">
+            <h2 class="text-2xl font-semibold text-red-700 mb-4">Understanding the Customer's Environment</h2>
+            <p class="mb-4 text-gray-600">Beyond specific questions, try to identify these common technologies and concepts:</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <h3 class="text-xl font-medium mb-2 text-gray-800">Common Technologies to Listen For:</h3>
+                    <ul class="list-disc pl-5 space-y-1 text-gray-700">
+                        <li>Operating Systems (Linux distributions like RHEL, CentOS, Ubuntu; Windows Server)</li>
+                        <li>Virtualization (VMware vSphere, KVM, Hyper-V)</li>
+                        <li>Cloud Platforms (AWS, Azure, Google Cloud, OpenStack)</li>
+                        <li>Container Runtimes (Docker, Podman) & Orchestration (Kubernetes, OpenShift)</li>
+                        <li>Databases (MySQL, PostgreSQL, Oracle, SQL Server, MongoDB, Cassandra)</li>
+                        <li>Middleware & Application Servers (JBoss, Apache Tomcat, WebLogic, WebSphere)</li>
+                        <li>DevOps Tools (Jenkins, GitLab CI/CD, Ansible, Terraform)</li>
+                        <li>Monitoring & Logging (Prometheus, Grafana, ELK Stack, Splunk)</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-xl font-medium mb-2 text-gray-800">How Red Hat Fits:</h3>
+                    <ul class="list-disc pl-5 space-y-1 text-gray-700">
+                        <li><strong>Red Hat Enterprise Linux (RHEL):</strong> Foundation for critical workloads.</li>
+                        <li><strong>OpenShift:</strong> Enterprise Kubernetes platform for hybrid cloud.</li>
+                        <li><strong>Ansible Automation Platform:</strong> Automate IT operations, infrastructure, and applications.</li>
+                        <li><strong>OpenStack Platform:</strong> Scalable IaaS for private clouds.</li>
+                        <li><strong>Integration (Fuse, AMQ):</strong> Connect applications and data across hybrid environments.</li>
+                        <li><strong>Storage (Ceph):</strong> Software-defined storage for diverse workloads.</li>
+                        <li><strong>Management (Satellite, Insights):</strong> Manage and optimize Red Hat infrastructure.</li>
+                    </ul>
+                </div>
+            </div>
+            <p class="mt-4 text-gray-600 italic"><strong>Tip:</strong> Listen for pain points related to complexity, manual processes, lack of scalability, security concerns, or vendor lock-in. These are often areas where Red Hat can provide significant value.</p>
+        </section>
+
+        <!-- Red Hat Product Ecosystem & Upstream Projects Section -->
+        <section class="bg-white p-6 rounded-lg shadow-md mb-8">
+            <h2 class="text-2xl font-semibold text-red-700 mb-4">Red Hat Product Ecosystem & Upstream Projects</h2>
+            <p class="mb-4 text-gray-600">Red Hat's products are built on a foundation of robust open-source projects. Understanding these relationships can help you explain the value of Red Hat's enterprise-grade solutions.</p>
+
+            <div class="mb-6 text-gray-700">
+                <p class="font-semibold mb-2">Key relationships include:</p>
+                <ul class="list-disc pl-5 space-y-2">
+                    <li><strong>Red Hat Enterprise Linux (RHEL):</strong> Derived from the **Fedora Linux** project, with contributions back to the community.</li>
+                    <li><strong>Red Hat OpenShift:</strong> Built upon **Kubernetes**, and integrates numerous other open-source projects like **Tekton** (for Pipelines), **Argo CD** (for GitOps), **Knative** (for Serverless), and **Istio** & **Kiali** (for Service Mesh).</li>
+                    <li><strong>Red Hat Ansible Automation Platform:</strong> Based on the open-source **Ansible** automation engine.</li>
+                    <li><strong>Red Hat OpenStack Platform:</strong> An enterprise distribution of the **OpenStack** cloud infrastructure project.</li>
+                    <li><strong>Red Hat JBoss Middleware:</strong> Many components are based on projects like **WildFly** (for JBoss EAP) and various Apache projects.</li>
+                    <li><strong>Red Hat Ceph Storage:</strong> Built on the **Ceph** distributed storage project.</li>
+                    <li><strong>Red Hat OpenShift AI:</strong> Leverages projects like **vLLM** for inferencing and is closely tied to the **InstructLab** project and **Granite** LLMs.</li>
+                </ul>
+                <p class="mt-4 italic">Red Hat actively contributes to these upstream communities, ensuring the health and innovation of the open-source projects that form the backbone of its products.</p>
+            </div>
+
+            <h3 class="text-xl font-semibold text-gray-800 mb-3">Visual Diagram (Placeholder)</h3>
+            <p class="mb-4 text-gray-600">If you have a visual diagram illustrating these relationships, you can embed it here. For example:</p>
+            <div class="w-full h-48 bg-gray-200 flex items-center justify-center rounded-lg text-gray-500 text-center p-4">
+                <!-- Placeholder for a diagram image -->
+                <p>
+                    [Insert your diagram image here, e.g., &lt;img src="path/to/your/diagram.png" alt="Red Hat Product Ecosystem Diagram" class="max-w-full h-auto"/&gt;]
+                    <br>
+                    (You can replace this text with an actual image of a diagram if you find one.)
+                </p>
+            </div>
+        </section>
+
+        <!-- Discovery Pad & AI Insights Section -->
+        <section class="bg-white p-6 rounded-lg shadow-md mb-8">
+            <h2 class="text-2xl font-semibold text-red-700 mb-4">Discovery Pad & AI Insights</h2>
+            <p class="mb-4 text-gray-600">Jot down your notes from the customer conversation here. Then, click "Generate Insights" to get AI-powered suggestions!</p>
+
+            <textarea id="customerNotes"
+                      class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent mb-4 resize-y"
+                      rows="10"
+                      placeholder="Enter your customer conversation notes here... (e.g., 'Customer uses AWS for new apps, struggling with legacy data center migration. Looking for better automation for deployments.')"></textarea>
+
+            <button id="generateInsightsBtn"
+                    class="w-full bg-red-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-red-700 transition duration-300 ease-in-out shadow-md flex items-center justify-center">
+                <span id="buttonText">✨ Generate Insights</span>
+                <div id="loadingSpinner" class="loading-spinner ml-3 hidden"></div>
+            </button>
+
+            <div id="insightsOutput" class="mt-6 p-4 bg-gray-50 border border-gray-200 rounded-lg hidden">
+                <h3 class="text-xl font-semibold text-red-700 mb-3">AI-Generated Insights:</h3>
+                <div id="insightsContent" class="prose max-w-none text-gray-700">
+                    <!-- Insights will be displayed here -->
+                </div>
+            </div>
+
+            <!-- Error Message Box -->
+            <div id="errorMessageBox" class="mt-6 p-4 bg-red-100 border border-red-400 text-red-700 rounded-lg hidden">
+                <p id="errorMessageText"></p>
+            </div>
+        </section>
+
+        <!-- New: Objection Handling Section -->
+        <section class="bg-white p-6 rounded-lg shadow-md mb-8">
+            <h2 class="text-2xl font-semibold text-red-700 mb-4">Objection Handling Assistant</h2>
+            <p class="mb-4 text-gray-600">Enter a common customer objection, and get AI-powered Red Hat-aligned rebuttals and talking points.</p>
+
+            <textarea id="objectionInput"
+                      class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent mb-4 resize-y"
+                      rows="4"
+                      placeholder="e.g., 'Red Hat is too expensive compared to open source alternatives.'"></textarea>
+
+            <button id="generateRebuttalBtn"
+                    class="w-full bg-red-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-red-700 transition duration-300 ease-in-out shadow-md flex items-center justify-center">
+                <span id="rebuttalButtonText">✨ Generate Rebuttal</span>
+                <div id="rebuttalLoadingSpinner" class="loading-spinner ml-3 hidden"></div>
+            </button>
+
+            <div id="rebuttalOutput" class="mt-6 p-4 bg-gray-50 border border-gray-200 rounded-lg hidden">
+                <h3 class="text-xl font-semibold text-red-700 mb-3">AI-Generated Rebuttal:</h3>
+                <div id="rebuttalContent" class="prose max-w-none text-gray-700">
+                    <!-- Rebuttal will be displayed here -->
+                </div>
+            </div>
+
+            <!-- Error Message Box for Rebuttal -->
+            <div id="rebuttalErrorMessageBox" class="mt-6 p-4 bg-red-100 border border-red-400 text-red-700 rounded-lg hidden">
+                <p id="rebuttalErrorMessageText"></p>
+            </div>
+        </section>
+
+        <!-- New: Tailored Questions Section -->
+        <section class="bg-white p-6 rounded-lg shadow-md mb-8">
+            <h2 class="text-2xl font-semibold text-red-700 mb-4">Tailored Question Generator</h2>
+            <p class="mb-4 text-gray-600">Provide an industry or a specific use case, and get AI-suggested questions to ask your customer.</p>
+
+            <input type="text" id="industryUseCasesInput"
+                   class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent mb-4"
+                   placeholder="e.g., 'Financial Services, Cloud Migration' or 'Healthcare, AI/ML adoption'"/>
+
+            <button id="generateQuestionsBtn"
+                    class="w-full bg-red-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-red-700 transition duration-300 ease-in-out shadow-md flex items-center justify-center">
+                <span id="questionsButtonText">✨ Generate Tailored Questions</span>
+                <div id="questionsLoadingSpinner" class="loading-spinner ml-3 hidden"></div>
+            </button>
+
+            <div id="questionsOutput" class="mt-6 p-4 bg-gray-50 border border-gray-200 rounded-lg hidden">
+                <h3 class="text-xl font-semibold text-red-700 mb-3">AI-Generated Questions:</h3>
+                <div id="questionsContent" class="prose max-w-none text-gray-700">
+                    <!-- Questions will be displayed here -->
+                </div>
+            </div>
+
+            <!-- Error Message Box for Questions -->
+            <div id="questionsErrorMessageBox" class="mt-6 p-4 bg-red-100 border border-red-400 text-red-700 rounded-lg hidden">
+                <p id="questionsErrorMessageText"></p>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="text-center text-gray-500 text-sm mt-8">
+            <p>&copy; 2025 Red Hat Customer Discovery Tool. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <script type="module">
+        // Accordion functionality
+        document.querySelectorAll('.accordion-header').forEach(button => {
+            button.addEventListener('click', () => {
+                const accordionContent = button.nextElementSibling;
+                const svgIcon = button.querySelector('svg');
+
+                // Close all other open accordions
+                document.querySelectorAll('.accordion-content.active').forEach(openContent => {
+                    if (openContent !== accordionContent) {
+                        openContent.classList.remove('active');
+                        openContent.previousElementSibling.querySelector('svg').classList.remove('rotate-180');
+                    }
+                });
+
+                // Toggle the clicked accordion
+                accordionContent.classList.toggle('active');
+                svgIcon.classList.toggle('rotate-180');
+            });
+        });
+
+        // Helper function for AI API calls
+        async function callGeminiAPI(prompt, outputDiv, contentDiv, buttonSpan, loadingDiv, errorBox, errorTextSpan) {
+            hideErrorMessage(errorBox, errorTextSpan);
+            outputDiv.classList.add('hidden');
+            contentDiv.innerHTML = '';
+            buttonSpan.textContent = 'Generating...';
+            loadingDiv.classList.remove('hidden');
+            buttonSpan.parentNode.disabled = true; // Disable the button
+
+            try {
+                let chatHistory = [];
+                chatHistory.push({ role: "user", parts: [{ text: prompt }] });
+                const payload = { contents: chatHistory };
+                const apiKey = ""; // If you want to use models other than gemini-2.0-flash or imagen-3.0-generate-002, provide an API key here. Otherwise, leave this as-is.
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const result = await response.json();
+
+                if (result.candidates && result.candidates.length > 0 &&
+                    result.candidates[0].content && result.candidates[0].content.parts &&
+                    result.candidates[0].content.parts.length > 0) {
+                    const text = result.candidates[0].content.parts[0].text;
+                    contentDiv.innerHTML = formatTextToHtml(text);
+                    outputDiv.classList.remove('hidden');
+                } else {
+                    showErrorMessage('Failed to generate response. The AI response was empty or malformed.', errorBox, errorTextSpan);
+                    console.error('AI response error:', result);
+                }
+            } catch (error) {
+                showErrorMessage('An error occurred while generating response. Please try again.', errorBox, errorTextSpan);
+                console.error('Fetch error:', error);
+            } finally {
+                loadingDiv.classList.add('hidden');
+                buttonSpan.parentNode.disabled = false; // Re-enable the button
+            }
+        }
+
+        // Function to show error message
+        function showErrorMessage(message, errorBox, errorTextSpan) {
+            errorTextSpan.textContent = message;
+            errorBox.classList.remove('hidden');
+        }
+
+        // Function to hide error message
+        function hideErrorMessage(errorBox, errorTextSpan) {
+            errorBox.classList.add('hidden');
+            errorTextSpan.textContent = '';
+        }
+
+        // Discovery Pad & AI Insights Generation
+        const generateInsightsBtn = document.getElementById('generateInsightsBtn');
+        const customerNotesTextarea = document.getElementById('customerNotes');
+        const insightsOutputDiv = document.getElementById('insightsOutput');
+        const insightsContentDiv = document.getElementById('insightsContent');
+        const insightsLoadingSpinner = document.getElementById('loadingSpinner');
+        const insightsButtonText = document.getElementById('buttonText');
+        const insightsErrorMessageBox = document.getElementById('errorMessageBox');
+        const insightsErrorMessageText = document.getElementById('errorMessageText');
+
+        generateInsightsBtn.addEventListener('click', async () => {
+            const notes = customerNotesTextarea.value.trim();
+            if (!notes) {
+                showErrorMessage('Please enter some customer notes before generating insights.', insightsErrorMessageBox, insightsErrorMessageText);
+                return;
+            }
+            const prompt = `As an experienced Red Hat solutions architect, analyze the following customer conversation notes. Provide:
+            1.  **Summary of Customer Environment & Challenges:** Briefly summarize the key aspects of their current environment and the challenges/pain points they are experiencing.
+            2.  **Potential Red Hat Solutions Alignment:** Suggest specific Red Hat products or solutions that could address their identified needs. Explain why each is relevant.
+            3.  **Suggested Next Steps/Deeper Dive Questions:** Propose follow-up questions or areas for the MDR to explore further in subsequent conversations to qualify the opportunity.
+
+            Customer Notes:
+            ${notes}`;
+            await callGeminiAPI(prompt, insightsOutputDiv, insightsContentDiv, insightsButtonText, insightsLoadingSpinner, insightsErrorMessageBox, insightsErrorMessageText);
+            insightsButtonText.textContent = '✨ Generate Insights'; // Reset text after call
+        });
+
+        // Objection Handling Generator
+        const generateRebuttalBtn = document.getElementById('generateRebuttalBtn');
+        const objectionInput = document.getElementById('objectionInput');
+        const rebuttalOutput = document.getElementById('rebuttalOutput');
+        const rebuttalContent = document.getElementById('rebuttalContent');
+        const rebuttalLoadingSpinner = document.getElementById('rebuttalLoadingSpinner');
+        const rebuttalButtonText = document.getElementById('rebuttalButtonText');
+        const rebuttalErrorMessageBox = document.getElementById('rebuttalErrorMessageBox');
+        const rebuttalErrorMessageText = document.getElementById('rebuttalErrorMessageText');
+
+        generateRebuttalBtn.addEventListener('click', async () => {
+            const objection = objectionInput.value.trim();
+            if (!objection) {
+                showErrorMessage('Please enter an objection before generating a rebuttal.', rebuttalErrorMessageBox, rebuttalErrorMessageText);
+                return;
+            }
+            const prompt = `As a Red Hat sales expert, provide a concise and effective rebuttal or talking points for the following customer objection, focusing on Red Hat's value proposition:
+
+            Customer Objection: "${objection}"`;
+            await callGeminiAPI(prompt, rebuttalOutput, rebuttalContent, rebuttalButtonText, rebuttalLoadingSpinner, rebuttalErrorMessageBox, rebuttalErrorMessageText);
+            rebuttalButtonText.textContent = '✨ Generate Rebuttal'; // Reset text after call
+        });
+
+        // Tailored Questions Generator
+        const generateQuestionsBtn = document.getElementById('generateQuestionsBtn');
+        const industryUseCasesInput = document.getElementById('industryUseCasesInput');
+        const questionsOutput = document.getElementById('questionsOutput');
+        const questionsContent = document.getElementById('questionsContent');
+        const questionsLoadingSpinner = document.getElementById('questionsLoadingSpinner');
+        const questionsButtonText = document.getElementById('questionsButtonText');
+        const questionsErrorMessageBox = document.getElementById('questionsErrorMessageBox');
+        const questionsErrorMessageText = document.getElementById('questionsErrorMessageText');
+
+        generateQuestionsBtn.addEventListener('click', async () => {
+            const input = industryUseCasesInput.value.trim();
+            if (!input) {
+                showErrorMessage('Please enter an industry or use case before generating questions.', questionsErrorMessageBox, questionsErrorMessageText);
+                return;
+            }
+            const prompt = `As a Red Hat solutions architect, generate 5-7 insightful discovery questions for a customer in the following context (industry/use case): "${input}". Focus on questions that would help uncover their challenges and potential alignment with Red Hat solutions.`;
+            await callGeminiAPI(prompt, questionsOutput, questionsContent, questionsButtonText, questionsLoadingSpinner, questionsErrorMessageBox, questionsErrorMessageText);
+            questionsButtonText.textContent = '✨ Generate Tailored Questions'; // Reset text after call
+        });
+
+        // Simple Markdown to HTML converter (for basic formatting like bold, lists)
+        function formatTextToHtml(markdownText) {
+            let html = markdownText;
+
+            // Convert bold (**text**)
+            html = html.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+            // Convert italics (*text*)
+            html = html.replace(/\*(.*?)\*/g, '<em>$1</em>');
+            // Convert headers (# Header, ## Subheader, etc.) - simple conversion
+            html = html.replace(/^### (.*$)/gim, '<h4>$1</h4>');
+            html = html.replace(/^## (.*$)/gim, '<h3>$1</h3>');
+            html = html.replace(/^# (.*$)/gim, '<h2>$1</h2>');
+            // Convert unordered lists (- item)
+            html = html.replace(/^- (.*$)/gim, '<li>$1</li>');
+            if (html.includes('<li>')) {
+                html = '<ul>' + html + '</ul>';
+                html = html.replace(/<\/ul>(\s*)<ul>/g, '$1'); // Remove redundant ul tags
+            }
+            // Convert numbered lists (1. item)
+            html = html.replace(/^\d+\. (.*$)/gim, '<li>$1</li>');
+            if (html.includes('<li>') && !html.includes('<ul>')) { // Only if not already handled as unordered
+                html = '<ol>' + html + '</ol>';
+                html = html.replace(/<\/ol>(\s*)<ol>/g, '$1'); // Remove redundant ol tags
+            }
+            // Convert newlines to breaks
+            html = html.replace(/\n/g, '<br>');
+
+            return html;
+        }
+    </script>
+</body>
+</html>
+
